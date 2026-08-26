@@ -7,7 +7,7 @@ const interesses = [
   "Outro"
 ];
 
-const SCRIPT_URL = "https://google.com";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
 
 // IMPORTANTE: Mantém exatamente o array original que o seu Google Sheets exige
 const campos = [
