@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtoNest Automação</title>
+    <!-- Vincula o CSS do chat -->
+    <link rel="stylesheet" href="css/chat.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .card-preview {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            transition: max-width 0.2s;
+        }
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            box-sizing: border-box;
+        }
+        .action-btn:active { transform: scale(0.98); }
+        .btn-site { background: #5897fb; color: white; }
+        .btn-contact { background: #2d3748; color: white; }
+        .btn-whats { background: #25d366; color: white; }
+
+        /* Regra para PC */
+        @media (min-width: 769px) {
+            .container { max-width: 700px; }
+            .card-preview { max-width: 640px; }
+            .action-btn { max-width: 400px; margin-left: auto; margin-right: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">ProtoNest</div>
+        <div class="subtitle">Automação Inteligente e Eficiente</div>
+
+        <!-- Imagem do cartão escaneado -->
+        <img src="cartao8.jpg" alt="Cartão ProtoNest" class="card-preview">
+
+        <!-- Botão 1: Link para o Site -->
+        <a href="https://protonest.github.io/protonest/" class="action-btn btn-site">Ir para o Site Principal</a>
+        
+        <!-- Botão 2: Adicionar aos Contatos (URL 100% codificada - Aceita em Android/Windows/iOS) -->
+        <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0D%0AVERSION%3A3.0%0D%0AFN%3BCHARSET%3DUTF-8%3AProtoNest%20Automacao%0D%0AORG%3BCHARSET%3DUTF-8%3AProtoNest%20Automacao%0D%0ATEL%3BTYPE%3DCELL%3BTYPE%3DPREF%3A%2B5555996294266%0D%0AURL%3BTYPE%3DWORK%3BCHARSET%3DUTF-8%3Ahttps%3A%2F%2Fprotonest.github.io%2Fprotonest%2F%0D%0AEND%3AVCARD" download="ProtoNest_Automacao.vcf" class="action-btn btn-contact">Salvar nos Contatos</a>
+        
+        <!-- Botão 3: Link do WhatsApp Corrigido com Mensagem Otimizada -->
+        <a href="https://wa.me/5555996294266?text=Olá, vim pelo Qr Code!" class="action-btn btn-whats">Falar no WhatsApp</a>
+    </div>
+
+    <!-- Vincula o JS do chat adaptado -->
+    <script src="js/chat.js"></script>
+</body>
+</html>
