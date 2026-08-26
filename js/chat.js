@@ -67,7 +67,6 @@ btn.onclick = () => {
   if (mensagens.innerHTML === "") bot(perguntas.nome);
 };
 
-// Abre automaticamente 1 segundo após carregar
 window.addEventListener("load", () => {
   setTimeout(() => {
     overlay.style.display = "block";
@@ -118,10 +117,9 @@ function enviar() {
   input.value = "";
   etapa++;
 
-  // Se respondeu o interesse e NÃO foi "Outro", pula a pergunta oculta da necessidade
   if (campos[etapa - 1] === "interesse" && valor !== "Outro") {
     lead.necessidade = "Preenchido via Opção Direta";
-    etapa = campos.length; // Pula direto para o fim do questionário
+    etapa = campos.length; 
   }
 
   if (etapa < campos.length) {
@@ -132,16 +130,23 @@ function enviar() {
   }
 }
 
+// CORREÇÃO AQUI: Mudança do formato de envio para simular um formulário válido
 async function finalizar() {
   lead.dataHora = new Date().toLocaleString("pt-BR");
 
   bot("🔍 Gravando seus dados...");
 
+  // Transforma o objeto JavaScript em formato URL Form Encoded aceito pelo Apps Script
+  const formData = new URLSearchParams();
+  for (const param in lead) {
+    formData.append(param, lead[param]);
+  }
+
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(lead)
+    mode: "no-cors", // Ignora o bloqueio do navegador
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Formato correto para no-cors
+    body: formData.toString()
   }).catch(err => console.log("Erro controlado:", err));
 
   bot(`✅ Perfeito, ${lead.nome}! Seus dados foram salvos.`);
