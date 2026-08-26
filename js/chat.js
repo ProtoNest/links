@@ -21,7 +21,7 @@ const campos = [
 
 // Configuração de mensagens do Proton sem emojis redundantes
 const perguntas = {
-  saudacao: "Oi! Eu sou o Proton, o assistente virtual da ProtoNest, e vou te fazer apenas 3 perguntas rápidas para nos ajudar no contato.",
+  saudacao: "Oi! Eu sou o Próton, o assistente virtual da ProtoNest, e vou te fazer apenas 3 perguntas rápidas para nos ajudar no contato.",
   nome: "Para começar, qual é o seu nome?",
   whatsapp: "Qual seu WhatsApp (com DDD) para contato?",
   categoria: "Qual o seu principal interesse hoje?",
