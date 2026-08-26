@@ -1,11 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <!-- Altere a URL abaixo para onde você quer que o QR code aponte HOJE -->
-    <meta http-equiv="refresh" content="0; url=https://protonest.github.io/protonest/">
-    <title>Redirecionando...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtoNest Automação</title>
+    <!-- Vincula o CSS do chat -->
+    <link rel="stylesheet" href="css/chat.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a365d;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            box-sizing: border-box;
+        }
+        .action-btn:active { transform: scale(0.98); }
+        .btn-site { background: #5897fb; color: white; }
+        .btn-contact { background: #2d3748; color: white; }
+        .btn-whats { background: #25d366; color: white; }
+    </style>
 </head>
 <body>
-    <p>Se você não for redirecionado automaticamente, <a href="https://seusite.com.br">clique aqui</a>.</p>
+
+    <div class="container">
+        <div class="logo">ProtoNest</div>
+        <div class="subtitle">Automação Inteligente e Eficiente</div>
+
+        <!-- Botão 1: Link Direto para o Site -->
+        <a href="https://protonest.github.io/protonest/" class="action-btn btn-site">🌐 Ir para o Site Principal</a>
+        
+        <!-- Botão 2: Adicionar aos Contatos (Gera um VCF virtual em tempo real) -->
+        <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3BCHARSET%3DUTF-8%3B%3BProtoNest%20Automa%C3%A7%C3%A3o%3B%3B%3B%0AFN%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0AORG%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0ATEL%3BTYPE%3DCELL%3BTYPE%3DVOICE%3BTYPE%3DPREF%3A%2B55996294266%0AURL%3BTYPE%3DWORK%3BCHARSET%3DUTF-8%3Bhttps%3A%2F%2Fprotonest.github.io%2Fprotonest%2F%0AEND%3AVCARD" download="ProtoNest_Automacao.vcf" class="action-btn btn-contact">👤 Salvar nos Contatos</a>
+        
+        <!-- Botão 3: Link do WhatsApp com mensagem pronta do QR Code -->
+        <a href="https://wa.me." class="action-btn btn-whats">💬 Falar no WhatsApp</a>
+    </div>
+
+    <!-- Vincula o JS do chat adaptado -->
+    <script src="js/chat.js"></script>
 </body>
 </html>
