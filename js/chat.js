@@ -19,9 +19,10 @@ const campos = [
   "potencial"
 ];
 
-// Fluxo de perguntas limpo e sem emojis
+// Configuração de mensagens do Proton sem emojis redundantes
 const perguntas = {
-  nome: "Olá. Seja bem-vindo à ProtoNest Automação. Para melhor atender você, recomendamos responder apenas 3 perguntas rápidas. Qual é o seu nome?",
+  saudacao: "Oi! Eu sou o Proton, o assistente virtual da ProtoNest, e vou te fazer apenas 3 perguntas rápidas para nos ajudar no contato.",
+  nome: "Para começar, qual é o seu nome?",
   whatsapp: "Qual seu WhatsApp (com DDD) para contato?",
   categoria: "Qual o seu principal interesse hoje?",
   necessidade: "Qual a sua necessidade específica?"
@@ -30,7 +31,7 @@ const perguntas = {
 let etapa = 0;
 let lead = {};
 
-// Injeta a estrutura HTML com design moderno escuro e sem emojis nos botões de controle
+// Injeta a estrutura HTML com design escuro moderno e o robô isolado no cabeçalho
 document.body.insertAdjacentHTML("beforeend", `
 <div class="chat-overlay"></div>
 <div class="chat-btn" style="background: #1f2937; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
@@ -71,21 +72,30 @@ function fecharChat() {
 fechar.onclick = fecharChat;
 pular.onclick = fecharChat;
 
+// Dispara os balões iniciais sequencialmente
+function iniciarConversa() {
+  if (mensagens.innerHTML === "") {
+    bot(perguntas.saudacao);
+    setTimeout(() => {
+      bot(perguntas.nome);
+    }, 600);
+  }
+}
+
 btn.onclick = () => {
   overlay.style.display = "block";
   janela.style.display = "flex";
-  if (mensagens.innerHTML === "") bot(perguntas.nome);
+  iniciarConversa();
 };
 
 window.addEventListener("load", () => {
   setTimeout(() => {
     overlay.style.display = "block";
     janela.style.display = "flex";
-    if (mensagens.innerHTML === "") bot(perguntas.nome);
+    iniciarConversa();
   }, 1000);
 });
 
-// Balões de mensagens customizados para o estilo dark moderno
 function bot(msg) {
   mensagens.innerHTML += `<div class="bot" style="background: #262626; border: 1px solid #3a3a3a; color: #ffffff; padding: 10px; border-radius: 8px; margin-bottom: 10px; line-height: 1.5; align-self: flex-start; max-width: 85%;">${msg}</div>`;
   mensagens.scrollTop = mensagens.scrollHeight;
@@ -180,4 +190,3 @@ const input = document.getElementById("chatInput");
 input.addEventListener("focus", () => {
   setTimeout(() => mensagens.scrollTop = mensagens.scrollHeight, 300);
 });
-
