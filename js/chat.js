@@ -7,13 +7,14 @@ const interesses = [
   "Outro"
 ];
 
-const SCRIPT_URL = "https://google.com";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
 
+// Mapeamento interno dos novos campos da conversa
 const campos = ["nome", "whatsapp", "interesse", "necessidade"];
 
 const perguntas = {
   nome: "Olá 👋 Seja bem-vindo à ProtoNest Automação. Para melhor atender você, recomendamos responder apenas 3 perguntas rápidas. Qual é o seu nome?",
-  whatsapp: "Qual seu WhatsApp com DDD?",
+  whatsapp: "Qual seu WhatsApp (com DDD) para contato?",
   interesse: "Qual o seu principal interesse hoje?",
   necessidade: "Qual a sua necessidade específica?"
 };
@@ -21,6 +22,7 @@ const perguntas = {
 let etapa = 0;
 let lead = {};
 
+// Injeta a estrutura HTML com o botão "Não responder" e cabeçalho alinhado
 document.body.insertAdjacentHTML("beforeend", `
 <div class="chat-overlay"></div>
 <div class="chat-btn">
@@ -28,11 +30,11 @@ document.body.insertAdjacentHTML("beforeend", `
   <span class="mobile-chat">💬</span>
 </div>
 <div class="chat-window">
-  <div class="chat-header">
-    <span>ProtoNest Automação</span>
-    <div class="chat-header-actions">
-      <span class="chat-skip" id="chatSkipBtn">Não responder</span>
-      <span class="chat-close">✖</span>
+  <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <span>ProtoNest Assistente</span>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <span id="chatSkipBtn" style="font-size: 12px; background: rgba(255, 255, 255, 0.2); padding: 4px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase;">Não responder</span>
+      <span class="chat-close" style="cursor: pointer; font-size: 18px; font-weight: bold;">✖</span>
     </div>
   </div>
   <div class="chat-messages"></div>
@@ -115,6 +117,7 @@ function enviar() {
   user(valor);
   lead[campos[etapa]] = valor;
   input.value = "";
+  
   etapa++;
 
   if (campos[etapa - 1] === "interesse" && valor !== "Outro") {
@@ -130,30 +133,34 @@ function enviar() {
   }
 }
 
-// CORREÇÃO AQUI: Mudança do formato de envio para simular um formulário válido
 async function finalizar() {
-  lead.dataHora = new Date().toLocaleString("pt-BR");
+  // Cria a estrutura exata de JSON que a sua planilha antiga espera receber
+  const payloadAntigo = {
+    nome: lead.nome || "",
+    empresa: "Informado no Interesse", 
+    whatsapp: lead.whatsapp || "",
+    categoria: lead.interesse || "", // Envia o interesse na coluna "categoria"
+    necessidade: lead.necessidade || "",
+    urgencia: "Não aplicável",
+    porte: "Não informado",
+    dataHora: new Date().toLocaleString("pt-BR")
+  };
+  
+  bot("🤖 Guardando seus dados de contato...");
 
-  bot("🔍 Gravando seus dados...");
-
-  // Transforma o objeto JavaScript em formato URL Form Encoded aceito pelo Apps Script
-  const formData = new URLSearchParams();
-  for (const param in lead) {
-    formData.append(param, lead[param]);
-  }
-
+  // Envia em JSON usando a mesma estrutura estável que funcionava antes
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "no-cors", // Ignora o bloqueio do navegador
-    headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Formato correto para no-cors
-    body: formData.toString()
-  }).catch(err => console.log("Erro controlado:", err));
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payloadAntigo)
+  }).catch(err => console.log("Erro enviado:", err));
 
-  bot(`✅ Perfeito, ${lead.nome}! Seus dados foram salvos.`);
+  bot(`✅ Obrigado, ${lead.nome}! Dados salvos. Direcionando você de volta...`);
   
   setTimeout(() => {
     fecharChat();
-  }, 2500);
+  }, 3000);
 }
 
 const input = document.getElementById("chatInput");
