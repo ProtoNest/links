@@ -9,7 +9,8 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f7f9fc;
+            background: #121212;
+            color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
@@ -28,11 +29,11 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #1a365d;
+            color: #ffffff;
             margin-bottom: 5px;
         }
         .subtitle {
-            color: #718096;
+            color: #a0aec0;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -41,8 +42,9 @@
             max-width: 320px;
             height: auto;
             border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             margin-bottom: 30px;
+            transition: max-width 0.2s;
         }
         .action-btn {
             display: block;
@@ -55,7 +57,7 @@
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             transition: transform 0.2s;
             box-sizing: border-box;
         }
@@ -63,6 +65,21 @@
         .btn-site { background: #5897fb; color: white; }
         .btn-contact { background: #2d3748; color: white; }
         .btn-whats { background: #25d366; color: white; }
+
+        /* Regra para telas maiores (PC): dobra o tamanho máximo do cartão */
+        @media (min-width: 769px) {
+            .container {
+                max-width: 700px;
+            }
+            .card-preview {
+                max-width: 640px;
+            }
+            .action-btn {
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -74,14 +91,12 @@
         <!-- Imagem do cartão escaneado -->
         <img src="cartao8.jpg" alt="Cartão ProtoNest" class="card-preview">
 
-        <!-- Botão 1: Link Direto para o Site -->
-        <a href="https://protonest.github.io/protonest/" class="action-btn btn-site">🌐 Ir para o Site Principal</a>
+        <!-- Botões limpos sem ícones de IA -->
+        <a href="https://protonest.github.io/protonest/" class="action-btn btn-site">Ir para o Site Principal</a>
         
-        <!-- Botão 2: Adicionar aos Contatos (Gera um VCF virtual em tempo real) -->
-        <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3BCHARSET%3DUTF-8%3B%3BProtoNest%20Automa%C3%A7%C3%A3o%3B%3B%3B%0AFN%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0AORG%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0ATEL%3BTYPE%3DCELL%3BTYPE%3DVOICE%3BTYPE%3DPREF%3A%2B55996294266%0AURL%3BTYPE%3DWORK%3BCHARSET%3DUTF-8%3Bhttps%3A%2F%2Fprotonest.github.io%2Fprotonest%2F%0AEND%3AVCARD" download="ProtoNest_Automacao.vcf" class="action-btn btn-contact">👤 Salvar nos Contatos</a>
+        <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3BCHARSET%3DUTF-8%3B%3BProtoNest%20Automa%C3%A7%C3%A3o%3B%3B%3B%0AFN%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0AORG%3BCHARSET%3DUTF-8%3BProtoNest%20Automa%C3%A7%C3%A3o%0ATEL%3BTYPE%3DCELL%3BTYPE%3DVOICE%3BTYPE%3DPREF%3A%2B55996294266%0AURL%3BTYPE%3DWORK%3BCHARSET%3DUTF-8%3Bhttps%3A%2F%2Fprotonest.github.io%2Fprotonest%2F%0AEND%3AVCARD" download="ProtoNest_Automacao.vcf" class="action-btn btn-contact">Salvar nos Contatos</a>
         
-        <!-- Botão 3: Link do WhatsApp com mensagem pronta do QR Code -->
-        <a href="https://wa.me" class="action-btn btn-whats">💬 Falar no WhatsApp</a>
+        <a href="https://wa.me" class="action-btn btn-whats">Falar no WhatsApp</a>
     </div>
 
     <!-- Vincula o JS do chat adaptado -->
