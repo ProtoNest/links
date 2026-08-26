@@ -7,14 +7,13 @@ const interesses = [
   "Outro"
 ];
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
+const SCRIPT_URL = "https://google.com";
 
-// Campos organizados conforme o novo fluxo
 const campos = ["nome", "whatsapp", "interesse", "necessidade"];
 
 const perguntas = {
   nome: "Olá 👋 Seja bem-vindo à ProtoNest Automação. Para melhor atender você, recomendamos responder apenas 3 perguntas rápidas. Qual é o seu nome?",
-  whatsapp: "Qual seu WhatsApp (com DDD) para contato?",
+  whatsapp: "Qual seu WhatsApp com DDD?",
   interesse: "Qual o seu principal interesse hoje?",
   necessidade: "Qual a sua necessidade específica?"
 };
@@ -22,7 +21,6 @@ const perguntas = {
 let etapa = 0;
 let lead = {};
 
-// Injeta a estrutura HTML na página
 document.body.insertAdjacentHTML("beforeend", `
 <div class="chat-overlay"></div>
 <div class="chat-btn">
@@ -31,8 +29,11 @@ document.body.insertAdjacentHTML("beforeend", `
 </div>
 <div class="chat-window">
   <div class="chat-header">
-    <span>ProtoNest Assistente</span>
-    <span class="chat-close">✖</span>
+    <span>ProtoNest Automação</span>
+    <div class="chat-header-actions">
+      <span class="chat-skip" id="chatSkipBtn">Não responder</span>
+      <span class="chat-close">✖</span>
+    </div>
   </div>
   <div class="chat-messages"></div>
   <div class="chat-input">
@@ -46,9 +47,8 @@ const btn = document.querySelector(".chat-btn");
 const janela = document.querySelector(".chat-window");
 const mensagens = document.querySelector(".chat-messages");
 const fechar = document.querySelector(".chat-close");
+const pular = document.getElementById("chatSkipBtn");
 const overlay = document.querySelector(".chat-overlay");
-
-fechar.onclick = fecharChat;
 
 function fecharChat() {
   overlay.style.display = "none";
@@ -58,13 +58,16 @@ function fecharChat() {
   mensagens.innerHTML = "";
 }
 
+fechar.onclick = fecharChat;
+pular.onclick = fecharChat;
+
 btn.onclick = () => {
   overlay.style.display = "block";
   janela.style.display = "flex";
   if (mensagens.innerHTML === "") bot(perguntas.nome);
 };
 
-// Dispara sozinho 1 segundo após carregar a página
+// Abre automaticamente 1 segundo após carregar
 window.addEventListener("load", () => {
   setTimeout(() => {
     overlay.style.display = "block";
@@ -113,14 +116,12 @@ function enviar() {
   user(valor);
   lead[campos[etapa]] = valor;
   input.value = "";
-  
-  // Avança para a próxima etapa
   etapa++;
 
-  // Lógica da Pergunta Oculta: Se o interesse NÃO for "Outro", pula a pergunta 'necessidade'
+  // Se respondeu o interesse e NÃO foi "Outro", pula a pergunta oculta da necessidade
   if (campos[etapa - 1] === "interesse" && valor !== "Outro") {
-    lead.necessidade = "Não aplicável"; // Preenche por padrão para a planilha
-    etapa = campos.length; // Força ir direto para o salvamento final
+    lead.necessidade = "Preenchido via Opção Direta";
+    etapa = campos.length; // Pula direto para o fim do questionário
   }
 
   if (etapa < campos.length) {
@@ -133,22 +134,21 @@ function enviar() {
 
 async function finalizar() {
   lead.dataHora = new Date().toLocaleString("pt-BR");
-  
-  bot("🤖 Guardando seus dados de contato...");
+
+  bot("🔍 Gravando seus dados...");
 
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(lead)
-  }).catch(err => console.log("Erro enviado:", err));
+  }).catch(err => console.log("Erro controlado:", err));
 
-  bot(`✅ Obrigado, ${lead.nome}! Dados salvos. Direcionando você de volta...`);
+  bot(`✅ Perfeito, ${lead.nome}! Seus dados foram salvos.`);
   
-  // Fecha o assistente sozinho após 3 segundos do envio
   setTimeout(() => {
     fecharChat();
-  }, 3000);
+  }, 2500);
 }
 
 const input = document.getElementById("chatInput");
