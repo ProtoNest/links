@@ -7,22 +7,30 @@ const interesses = [
   "Outro"
 ];
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
+const SCRIPT_URL = "https://google.com";
 
-// Mapeamento interno dos novos campos da conversa
-const campos = ["nome", "whatsapp", "interesse", "necessidade"];
+// IMPORTANTE: Mantém exatamente o array original que o seu Google Sheets exige
+const campos = [
+  "nome",
+  "empresa",
+  "whatsapp",
+  "categoria",
+  "necessidade",
+  "urgencia",
+  "porte"
+];
 
 const perguntas = {
   nome: "Olá 👋 Seja bem-vindo à ProtoNest Automação. Para melhor atender você, recomendamos responder apenas 3 perguntas rápidas. Qual é o seu nome?",
   whatsapp: "Qual seu WhatsApp (com DDD) para contato?",
-  interesse: "Qual o seu principal interesse hoje?",
+  categoria: "Qual o seu principal interesse hoje?",
   necessidade: "Qual a sua necessidade específica?"
 };
 
 let etapa = 0;
 let lead = {};
 
-// Injeta a estrutura HTML com o botão "Não responder" e cabeçalho alinhado
+// Injeta o HTML idêntico ao original com o botão de pular embutido
 document.body.insertAdjacentHTML("beforeend", `
 <div class="chat-overlay"></div>
 <div class="chat-btn">
@@ -115,52 +123,58 @@ function enviar() {
   if (!valor) return;
 
   user(valor);
-  lead[campos[etapa]] = valor;
-  input.value = "";
-  
-  etapa++;
 
-  if (campos[etapa - 1] === "interesse" && valor !== "Outro") {
-    lead.necessidade = "Preenchido via Opção Direta";
-    etapa = campos.length; 
-  }
-
-  if (etapa < campos.length) {
-    bot(perguntas[campos[etapa]]);
-    if (campos[etapa] === "interesse") mostrarBotoes(interesses);
-  } else {
+  // Mapeia as respostas curtas para dentro do modelo de dados exigido pela sua planilha
+  if (etapa === 0) {
+    lead["nome"] = valor;
+    lead["empresa"] = "ProtoNest QR"; // Preenche automático
+    etapa = 2; // Pula direto para o WhatsApp
+    bot(perguntas.whatsapp);
+  } else if (etapa === 2) {
+    lead["whatsapp"] = valor;
+    etapa = 3; // Vai para o interesse (categoria)
+    bot(perguntas.categoria);
+    mostrarBotoes(interesses);
+  } else if (etapa === 3) {
+    lead["categoria"] = valor; // Salva o interesse na coluna categoria da planilha
+    
+    if (valor === "Outro") {
+      etapa = 4; // Abre a pergunta oculta se for outro
+      bot(perguntas.necessidade);
+    } else {
+      lead["necessidade"] = "Preenchido via Opção Direta";
+      lead["urgencia"] = "Não aplicável";
+      lead["porte"] = "Não informado";
+      finalizar();
+    }
+  } else if (etapa === 4) {
+    lead["necessidade"] = valor;
+    lead["urgencia"] = "Não aplicável";
+    lead["porte"] = "Não informado";
     finalizar();
   }
+
+  input.value = "";
 }
 
 async function finalizar() {
-  // Cria a estrutura exata de JSON que a sua planilha antiga espera receber
-  const payloadAntigo = {
-    nome: lead.nome || "",
-    empresa: "Informado no Interesse", 
-    whatsapp: lead.whatsapp || "",
-    categoria: lead.interesse || "", // Envia o interesse na coluna "categoria"
-    necessidade: lead.necessidade || "",
-    urgencia: "Não aplicável",
-    porte: "Não informado",
-    dataHora: new Date().toLocaleString("pt-BR")
-  };
+  lead.dataHora = new Date().toLocaleString("pt-BR");
   
   bot("🤖 Guardando seus dados de contato...");
 
-  // Envia em JSON usando a mesma estrutura estável que funcionava antes
+  // Envia o JSON exatamente como o código do IEL fazia antes
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payloadAntigo)
+    body: JSON.stringify(lead)
   }).catch(err => console.log("Erro enviado:", err));
 
   bot(`✅ Obrigado, ${lead.nome}! Dados salvos. Direcionando você de volta...`);
   
   setTimeout(() => {
     fecharChat();
-  }, 3000);
+  }, 2500);
 }
 
 const input = document.getElementById("chatInput");
