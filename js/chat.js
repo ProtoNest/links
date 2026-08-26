@@ -7,18 +7,22 @@ const interesses = [
   "Outro"
 ];
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGbXj0yuCjQoc6ytfdQsHDdTT3KwZ6f2k2F5np1f83M6wMEfzwfRpSA1ytNZhE2miu8Q/exec";
+
+const campos = [
+"nome",
+"empresa",
+"whatsapp",
+"categoria",
+"necessidade",
+"urgencia",
+"potencial"
+];
+
+//const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjvMJiTwh8M7w5sOMx3rN008VID2qRBOpgCTNJMG4LniiJoBG4e5UqhJjgaJfAMJuJ/exec";
 
 // IMPORTANTE: Mantém exatamente o array original que o seu Google Sheets exige
-const campos = [
-  "nome",
-  "empresa",
-  "whatsapp",
-  "categoria",
-  "necessidade",
-  "urgencia",
-  "porte"
-];
+
 
 const perguntas = {
   nome: "Olá 👋 Seja bem-vindo à ProtoNest Automação. Para melhor atender você, recomendamos responder apenas 3 perguntas rápidas. Qual é o seu nome?",
@@ -144,13 +148,13 @@ function enviar() {
     } else {
       lead["necessidade"] = "Preenchido via Opção Direta";
       lead["urgencia"] = "Não aplicável";
-      lead["porte"] = "Não informado";
+      lead["potencial"] = "Não informado";
       finalizar();
     }
   } else if (etapa === 4) {
     lead["necessidade"] = valor;
     lead["urgencia"] = "Não aplicável";
-    lead["porte"] = "Não informado";
+    lead["potencial"] = "Não informado";
     finalizar();
   }
 
